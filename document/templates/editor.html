@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/bootstrap-icons/bootstrap-icons.min.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'editor' %}">Notes</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'editor' %}?docid=0">New Document</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+    <section class="container pt-3">
+         <div class="row">
+             <div class="col-lg-2 col-md-12">
+                 <aside>
+                     <h3>Documents</h3>
+                     <ul class="list-group">
+                         {% for doc in documents %}
+                             <li class="list-group-item"><a href="{% url 'editor' %}?docid={{ doc.id }}">{{ doc.title }}</a></li>
+                         {% endfor %}
+                     </ul>
+                 </aside>
+             </div>
+             <div class="col-lg-10 col-md-12">
+                 <form action="{% url 'editor' %}" method="post">
+                     {% csrf_token %}
+
+                     <input type="hidden" name="docid" value="{{ docid }}">
+                     <div class="">
+                         <label class="form-label">Title</label>
+
+                         {% if document %}
+                             <span class="text-secondary">
+                             Created at: {{ document.created_at|date:"m/d Y" }} /
+                             Modified at: {{ document.modified_at|date:"m/d Y" }}
+                             </span>
+                         {% endif %}
+                     </div>
+                     <div class="mb-3">
+                         <input type="text" class="form-control" name="title" placeholder="Title"{% if document %} value="{{ document.title }}"{% endif %}>
+                     </div>
+
+                    <div class="">
+                         <label class="form-label">Content</label>
+                     </div>
+
+                    <div class="mb-3">
+                        <textarea rows="10" cols="5" name="content" class="form-control" placeholder="Content">{% if document %}{{ document.content }}{% endif %}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    {% if document %}
+                        <a href="{% url 'delete_document' document.id %}" class="btn btn-danger">Delete</a>
+                    {% endif %}
+                 </form>
+             </div>
+         </div>
+    </section>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
