@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-*d=amg8vqjx52m@8)kkd(t7ku7ccqcl7rtio41t)m!19kt^ugm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['simple-notes-app-g4ec.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
